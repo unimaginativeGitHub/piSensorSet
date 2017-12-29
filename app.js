@@ -36,8 +36,8 @@ async function sendDataToService() {
 
 app.get('/all', async function(req, res) {
   console.log('get all');
-  const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
-  if (sensorData.isValid) {
+  try {
+    const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
     res.send(`
     <!DOCTYPE html>
     <html>
@@ -53,8 +53,8 @@ Humidity:     ${sensorData.humidity.toFixed(1)} %
       </body>
     </html>
     `);
-  } else {
-    res.send('There was a problem retrieving temp and or humidity values. ' + sensorData.errors + ' total errors.');
+  } catch(err) {
+    res.send('There was a problem retrieving temp and or humidity values. Error: ' + err);
   }
 });
 
