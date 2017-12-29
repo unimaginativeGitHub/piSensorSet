@@ -30,10 +30,25 @@ const getSensorData = (callback) => {
   });
 }
 
-async function getSensorDataTWO() {
+async getSensorDataTWO() => {
   console.log('retrieving sensor data...');
   let sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
-  console.log('sensorData', sensorData);
+  if (sensorData.isValid) {
+    const url = generateGETLink(sensorData.temperature, sensorData.humidity);
+    https.get(url, res => {
+      res.setEncoding("utf8");
+      let body = "";
+      res.on("data", data => {
+        body += data;
+      });
+      res.on("end", () => {
+        body = JSON.parse(body);
+        console.log('message sent');
+      });
+    });
+  } else {
+    console.log('The was a problem sending temp and or humidity values. There were ' + sensorData.errors + ' errors');
+  }
 }
 
 const sendDataToService = () => {
@@ -113,8 +128,6 @@ app.get('/humidity', (req, res) => {
 });
 
 setInterval(sendDataToService, sendFrequency);
-
-getSensorDataTWO();
 
 app.listen(3000, () => {
   console.log('Example app listening on port 3000!');
