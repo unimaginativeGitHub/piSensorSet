@@ -71,7 +71,7 @@ app.get('/humidity', async function(req, res) {
   try {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
     res.send(sensorData.humidity.toFixed(1));
-  } else {
+  } catch(err) {
     res.send('There was a problem retrieving humidity values. Error: ' + err);
   }
 });
