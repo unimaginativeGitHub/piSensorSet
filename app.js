@@ -15,8 +15,8 @@ const generateGETLink = (temp, hum) => {
 
 async function sendDataToService() {
   console.log('retrieving sensor data...');
-  const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
-  if (sensorData.isValid) {
+  try {
+    const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
     const url = generateGETLink(sensorData.temperature.toFixed(1), sensorData.humidity.toFixed(1));
     https.get(url, res => {
       res.setEncoding("utf8");
@@ -29,8 +29,8 @@ async function sendDataToService() {
         console.log('message sent');
       });
     });
-  } else {
-    console.log('The was a problem sending temp and or humidity values. There were ' + sensorData.errors + ' errors');
+  } catch(err) {
+    console.log('The was a problem sending temp and or humidity values. Error: ', err);
   }
 }
 
@@ -54,7 +54,7 @@ Humidity:     ${sensorData.humidity.toFixed(1)} %
     </html>
     `);
   } catch(err) {
-    res.send('There was a problem retrieving temp and or humidity values. Error: ' + err);
+    res.send('There was a problem retrieving temp and or humidity values. Error: ', err);
   }
 });
 
@@ -63,7 +63,7 @@ app.get('/temperature', async function(req, res) {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
     res.send(sensorData.temperature.toFixed(1));
   } catch(err) {
-    res.send('There was a problem retrieving temp values. Error: ' + err);
+    res.send('There was a problem retrieving temp values. Error: ', err);
   }
 });
 
@@ -72,7 +72,7 @@ app.get('/humidity', async function(req, res) {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
     res.send(sensorData.humidity.toFixed(1));
   } catch(err) {
-    res.send('There was a problem retrieving humidity values. Error: ' + err);
+    res.send('There was a problem retrieving humidity values. Error: ', err);
   }
 });
 
