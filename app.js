@@ -34,7 +34,7 @@ async function sendDataToServiceTWO() {
   }
 }
 
-app.get('/all', (req, res) => {
+app.get('/all', async function(req, res) {
   console.log('get all');
   const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
   if (sensorData.isValid) {
@@ -58,7 +58,7 @@ Humidity:     ${sensorData.humidity} %
   }
 });
 
-app.get('/temperature', (req, res) => {
+app.get('/temperature', async function(req, res) {
   const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
   if (sensorData.isValid) {
     res.send('There was a problem retrieving temp values. ' + sensorData.errors + ' total errors.');
@@ -68,7 +68,7 @@ app.get('/temperature', (req, res) => {
   }
 });
 
-app.get('/humidity', (req, res) => {
+app.get('/humidity', async function(req, res) {
   const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
   if (sensorData.isValid) {
     res.send('There was a problem retrieving humidity values. ' + sensorData.errors + ' total errors.');
