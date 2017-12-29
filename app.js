@@ -47,7 +47,7 @@ app.get('/all', async function(req, res) {
       </head>
       <body>
         <pre>
-Temperature:  ${sensorData.temperature.toFixed(1)} °C <br/>
+Temperature:  ${sensorData.temperature.toFixed(1)} °C / ${sensorData.temperature.toFixed(1) * 9/5 + 32} °F<br/>
 Humidity:     ${sensorData.humidity.toFixed(1)} %
         </pre>
       </body>
@@ -79,5 +79,5 @@ app.get('/humidity', async function(req, res) {
 setInterval(sendDataToService, sendFrequency);
 
 app.listen(3000, () => {
-  console.log('Example app listening on port 3000!');
+  console.log('App listening on port 3000!');
 });
