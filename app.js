@@ -34,7 +34,7 @@ async function sendDataToService() {
   }
 }
 
-app.get('/all', async function(req, res) {
+app.get('/all', async (req, res) => {
   console.log('get all');
   try {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
@@ -58,7 +58,7 @@ Humidity:     ${sensorData.humidity.toFixed(1)} %
   }
 });
 
-app.get('/temperature', async function(req, res) {
+app.get('/temperature', async (req, res) => {
   try {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
     res.send(sensorData.temperature.toFixed(1));
@@ -67,7 +67,7 @@ app.get('/temperature', async function(req, res) {
   }
 });
 
-app.get('/humidity', async function(req, res) {
+app.get('/humidity', async (req, res) => {
   try {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
     res.send(sensorData.humidity.toFixed(1));
