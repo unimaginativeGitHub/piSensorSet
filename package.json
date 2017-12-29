@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "express": "4.16.2",
+    "forever-monitor": "^1.7.1",
+    "moment": "2.20.1",
+    "node-dht-sensor": "0.0.33",
+    "underscore": "1.8.3"
+  },
+  "description": "Simple rest api for temp retrieval",
+  "license": "UNLICENSED",
+  "main": "app.js",
+  "name": "temp-project",
+  "repository": "",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "version": "1.0.0"
+}
