@@ -38,8 +38,6 @@ app.get('/all', async function(req, res) {
   console.log('get all');
   const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
   if (sensorData.isValid) {
-    res.send('There was a problem retrieving temp and or humidity values. ' + sensorData.errors + ' total errors.');
-  } else {
     res.send(`
     <!DOCTYPE html>
     <html>
@@ -55,26 +53,28 @@ Humidity:     ${sensorData.humidity} %
       </body>
     </html>
     `);
+  } else {
+    res.send('There was a problem retrieving temp and or humidity values. ' + sensorData.errors + ' total errors.');
   }
 });
 
 app.get('/temperature', async function(req, res) {
   const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
   if (sensorData.isValid) {
-    res.send('There was a problem retrieving temp values. ' + sensorData.errors + ' total errors.');
-  } else {
     console.log('Temperature: ' + sensorData.temperature + ' °C');
     res.send(sensorData.temperature);
+  } else {
+    res.send('There was a problem retrieving temp values. ' + sensorData.errors + ' total errors.');
   }
 });
 
 app.get('/humidity', async function(req, res) {
   const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
   if (sensorData.isValid) {
-    res.send('There was a problem retrieving humidity values. ' + sensorData.errors + ' total errors.');
-  } else {
     console.log('Humidity:    ' + sensorData.humidity + ' °C');
     res.send(sensorData.humidity);
+  } else {
+    res.send('There was a problem retrieving humidity values. ' + sensorData.errors + ' total errors.');
   }
 });
 
