@@ -30,6 +30,12 @@ const getSensorData = (callback) => {
   });
 }
 
+async function getSensorDataTWO() {
+  console.log('retrieving sensor data...');
+  let sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
+  console.log('sensorData', sensorData);
+}
+
 const sendDataToService = () => {
   console.log('send data...');
   getSensorData((err, data) => {
@@ -107,6 +113,8 @@ app.get('/humidity', (req, res) => {
 });
 
 setInterval(sendDataToService, sendFrequency);
+
+getSensorDataTWO();
 
 app.listen(3000, () => {
   console.log('Example app listening on port 3000!');
