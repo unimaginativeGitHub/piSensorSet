@@ -30,7 +30,7 @@ const getSensorData = (callback) => {
   });
 }
 
-async getSensorDataTWO() => {
+async function getSensorDataTWO() {
   console.log('retrieving sensor data...');
   let sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
   if (sensorData.isValid) {
