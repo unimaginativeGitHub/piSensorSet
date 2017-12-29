@@ -13,7 +13,7 @@ const generateGETLink = (temp, hum) => {
   return `https://api.thingspeak.com/update?api_key=${apiKey}&field1=${temp}&field2=${hum}`;
 }
 
-async function sendDataToServiceTWO() {
+async function sendDataToService() {
   console.log('retrieving sensor data...');
   const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
   if (sensorData.isValid) {
