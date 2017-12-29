@@ -13,8 +13,7 @@ const generateGETLink = (temp, hum) => {
   return `https://api.thingspeak.com/update?api_key=${apiKey}&field1=${temp}&field2=${hum}`;
 }
 
-async function sendDataToService() {
-  console.log('retrieving sensor data...');
+const async sendDataToService() => {
   try {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
     const url = generateGETLink(sensorData.temperature.toFixed(1), sensorData.humidity.toFixed(1));
@@ -35,7 +34,6 @@ async function sendDataToService() {
 }
 
 app.get('/all', async (req, res) => {
-  console.log('get all');
   try {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
     res.send(`
