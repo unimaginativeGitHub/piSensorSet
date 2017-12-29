@@ -17,7 +17,7 @@ async function sendDataToService() {
   console.log('retrieving sensor data...');
   const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
   if (sensorData.isValid) {
-    const url = generateGETLink(sensorData.temperature, sensorData.humidity);
+    const url = generateGETLink(sensorData.temperature.toFixed(1), sensorData.humidity.toFixed(1));
     https.get(url, res => {
       res.setEncoding("utf8");
       let body = "";
@@ -47,8 +47,8 @@ app.get('/all', async function(req, res) {
       </head>
       <body>
         <pre>
-Temperature:  ${sensorData.temperature} °C <br/>
-Humidity:     ${sensorData.humidity} %
+Temperature:  ${sensorData.temperature.toFixed(1)} °C <br/>
+Humidity:     ${sensorData.humidity.toFixed(1)} %
         </pre>
       </body>
     </html>
@@ -59,22 +59,20 @@ Humidity:     ${sensorData.humidity} %
 });
 
 app.get('/temperature', async function(req, res) {
-  const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
-  if (sensorData.isValid) {
-    console.log('Temperature: ' + sensorData.temperature + ' °C');
-    res.send(sensorData.temperature);
-  } else {
-    res.send('There was a problem retrieving temp values. ' + sensorData.errors + ' total errors.');
+  try {
+    const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
+    res.send(sensorData.temperature.toFixed(1));
+  } catch(err) {
+    res.send('There was a problem retrieving temp values. Error: ' + err);
   }
 });
 
 app.get('/humidity', async function(req, res) {
-  const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
-  if (sensorData.isValid) {
-    console.log('Humidity:    ' + sensorData.humidity + ' °C');
-    res.send(sensorData.humidity);
+  try {
+    const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
+    res.send(sensorData.humidity.toFixed(1));
   } else {
-    res.send('There was a problem retrieving humidity values. ' + sensorData.errors + ' total errors.');
+    res.send('There was a problem retrieving humidity values. Error: ' + err);
   }
 });
 
