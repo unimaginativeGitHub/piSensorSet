@@ -5,7 +5,7 @@ const app = express();
 
 const sendFrequency = 60000; // 60 seconds
 const apiKey = 'FXLL8IM3ZJ1244OC';
-const sensorDHTModel = 11;
+const sensorDHTModel = 22;
 const sensorGPIO = 4;
 
 const generateGETLink = (temp, hum) => {
@@ -13,7 +13,7 @@ const generateGETLink = (temp, hum) => {
   return `https://api.thingspeak.com/update?api_key=${apiKey}&field1=${temp}&field2=${hum}`;
 }
 
-const async sendDataToService() => {
+const sendDataToService = async () => {
   try {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
     const url = generateGETLink(sensorData.temperature.toFixed(1), sensorData.humidity.toFixed(1));
