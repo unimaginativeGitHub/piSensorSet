@@ -7,6 +7,7 @@ const sendFrequency = 60000; // 60 seconds
 const apiKey = 'FXLL8IM3ZJ1244OC';
 const sensorDHTModel = 22;
 const sensorGPIO = 4;
+const precision = 1;
 
 const generateGETLink = (temp, hum) => {
   console.log(`https://api.thingspeak.com/update?api_key=${apiKey}&field1=${temp}&field2=${hum}`);
@@ -16,7 +17,7 @@ const generateGETLink = (temp, hum) => {
 const sendDataToService = async () => {
   try {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
-    const url = generateGETLink(sensorData.temperature.toFixed(2), sensorData.humidity.toFixed(2));
+    const url = generateGETLink(sensorData.temperature.toFixed(precision), sensorData.humidity.toFixed(precision));
     https.get(url, res => {
       res.setEncoding("utf8");
       let body = "";
@@ -45,8 +46,8 @@ app.get('/all', async (req, res) => {
       </head>
       <body>
         <pre>
-Temperature:  ${sensorData.temperature.toFixed(2)} °C / ${sensorData.temperature.toFixed(2) * 9/5 + 32} °F<br/>
-Humidity:     ${sensorData.humidity.toFixed(2)} %
+Temperature:  ${sensorData.temperature.toFixed(precision)} °C / ${sensorData.temperature.toFixed(precision) * 9/5 + 32} °F<br/>
+Humidity:     ${sensorData.humidity.toFixed(precision)} %
         </pre>
       </body>
     </html>
@@ -59,7 +60,7 @@ Humidity:     ${sensorData.humidity.toFixed(2)} %
 app.get('/temperature', async (req, res) => {
   try {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
-    res.send(sensorData.temperature.toFixed(2));
+    res.send(sensorData.temperature.toFixed(precision));
   } catch(err) {
     res.send('There was a problem retrieving temp values. Error: ', err);
   }
@@ -68,7 +69,7 @@ app.get('/temperature', async (req, res) => {
 app.get('/humidity', async (req, res) => {
   try {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
-    res.send(sensorData.humidity.toFixed(2));
+    res.send(sensorData.humidity.toFixed(precision));
   } catch(err) {
     res.send('There was a problem retrieving humidity values. Error: ', err);
   }
