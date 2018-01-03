@@ -16,7 +16,7 @@ const generateGETLink = (temp, hum) => {
 const sendDataToService = async () => {
   try {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
-    const url = generateGETLink(sensorData.temperature.toFixed(1), sensorData.humidity.toFixed(1));
+    const url = generateGETLink(sensorData.temperature.toFixed(2), sensorData.humidity.toFixed(2));
     https.get(url, res => {
       res.setEncoding("utf8");
       let body = "";
@@ -45,8 +45,8 @@ app.get('/all', async (req, res) => {
       </head>
       <body>
         <pre>
-Temperature:  ${sensorData.temperature.toFixed(1)} °C / ${sensorData.temperature.toFixed(1) * 9/5 + 32} °F<br/>
-Humidity:     ${sensorData.humidity.toFixed(1)} %
+Temperature:  ${sensorData.temperature.toFixed(2)} °C / ${sensorData.temperature.toFixed(2) * 9/5 + 32} °F<br/>
+Humidity:     ${sensorData.humidity.toFixed(2)} %
         </pre>
       </body>
     </html>
@@ -59,7 +59,7 @@ Humidity:     ${sensorData.humidity.toFixed(1)} %
 app.get('/temperature', async (req, res) => {
   try {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
-    res.send(sensorData.temperature.toFixed(1));
+    res.send(sensorData.temperature.toFixed(2));
   } catch(err) {
     res.send('There was a problem retrieving temp values. Error: ', err);
   }
@@ -68,7 +68,7 @@ app.get('/temperature', async (req, res) => {
 app.get('/humidity', async (req, res) => {
   try {
     const sensorData = await sensor.read(sensorDHTModel, sensorGPIO);
-    res.send(sensorData.humidity.toFixed(1));
+    res.send(sensorData.humidity.toFixed(2));
   } catch(err) {
     res.send('There was a problem retrieving humidity values. Error: ', err);
   }
